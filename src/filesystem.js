@@ -171,14 +171,21 @@ export class ArtifactWriter {
     const path = pathForUrl(record.request.url);
     const directory = await getDirectory(this.directoryHandle, path.directories);
     const filename = await chooseFilename(directory, path.filename);
+    const relativePath = [...path.directories, filename].join("/");
     const requestText = formatRequest(record.request, this.requestFormat);
     const metadataText = `${JSON.stringify(responseMetadata(record, body !== null), null, 2)}\n`;
 
+    console.info("[Local Request Saver] Writing capture", {
+      url: record.request.url,
+      relativePath,
+      bodyAvailable: body !== null,
+    });
     await writeFile(directory, `${filename}.req`, requestText);
     await writeFile(directory, `${filename}.resp`, metadataText);
     if (body !== null) {
       await writeFile(directory, filename, body);
     }
+    console.info("[Local Request Saver] Capture written", { relativePath });
   }
 
   flush() {

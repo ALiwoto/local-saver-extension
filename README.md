@@ -24,6 +24,8 @@ For each request, it writes:
 5. Reload or use the page.
 6. Open the popup again and select **Stop recording**.
 
+To capture a navigation from its very first request, start from Chrome's New Tab page. When recording starts, the extension changes that restricted page to `about:blank`, attaches the debugger, and then waits for you to enter the destination URL in the address bar.
+
 Chrome displays its debugger warning while a tab is being recorded. Closing that warning detaches the extension and stops capture.
 
 ## Output paths
@@ -51,3 +53,12 @@ Query strings receive a stable hash suffix. Repeated requests receive `__2`, `__
 - Multipart request bodies do not include the contents of uploaded files.
 - The saved body is the representation returned by the DevTools Protocol, not necessarily the original compressed wire bytes.
 - Opening DevTools on the recorded tab can detach the extension debugger.
+
+## Diagnostics
+
+1. Open `chrome://extensions` and find **Local Request Saver**.
+2. Select the **service worker** link under **Inspect views**.
+3. Keep the Console open and reproduce the problem.
+4. Copy the messages beginning with `[Local Request Saver]`, plus any red errors.
+
+Write failures include the request URL and intended relative output path in the service worker console.

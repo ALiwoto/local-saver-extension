@@ -2,12 +2,13 @@
   "manifest_version": 3,
   "name": "Local Request Saver",
   "description": "Save a tab's network requests, response metadata, and response bodies to a local folder.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "minimum_chrome_version": "118",
   "permissions": [
     "activeTab",
     "debugger",
     "storage",
+    "tabs",
     "unlimitedStorage"
   ],
   "background": {

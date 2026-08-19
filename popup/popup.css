@@ -110,3 +110,7 @@ select {
   color: #c62828;
   font-size: 12px;
 }
+
+#message.info {
+  color: #1565c0;
+}

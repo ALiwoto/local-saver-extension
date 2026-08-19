@@ -11,8 +11,9 @@ let tabId = null;
 let directoryHandle = null;
 let recording = false;
 
-function showMessage(text = "") {
+function showMessage(text = "", type = "error") {
   message.textContent = text;
+  message.className = text ? type : "";
 }
 
 function render() {
@@ -75,6 +76,9 @@ async function toggleCapture() {
       throw new Error(response?.error ?? "The background worker did not respond.");
     }
     recording = response.recording;
+    if (response.preparedNewTab) {
+      showMessage("Recording is active. Enter the destination URL in the address bar.", "info");
+    }
   } catch (error) {
     showMessage(error?.message ?? String(error));
   } finally {
