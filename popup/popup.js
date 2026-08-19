@@ -11,6 +11,15 @@ let tabId = null;
 let directoryHandle = null;
 let recording = false;
 
+function requestedTabId() {
+  const parameter = new URL(location.href).searchParams.get("tabId");
+  if (parameter === null) {
+    return null;
+  }
+  const value = Number(parameter);
+  return Number.isInteger(value) ? value : null;
+}
+
 function showMessage(text = "", type = "error") {
   message.textContent = text;
   message.className = text ? type : "";
@@ -79,6 +88,12 @@ async function toggleCapture() {
     if (response.preparedNewTab) {
       showMessage("Recording is active. Enter the destination URL in the address bar.", "info");
     }
+    if (recording) {
+      const targetTab = await chrome.tabs.update(tabId, { active: true });
+      if (targetTab.windowId !== undefined) {
+        await chrome.windows.update(targetTab.windowId, { focused: true });
+      }
+    }
   } catch (error) {
     showMessage(error?.message ?? String(error));
   } finally {
@@ -97,14 +112,18 @@ selectFolderButton.addEventListener("click", () => {
 toggleButton.addEventListener("click", toggleCapture);
 
 async function initialize() {
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  tabId = tab?.id ?? null;
+  tabId = requestedTabId();
+  if (tabId === null) {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    tabId = tab?.id ?? null;
+  }
   directoryHandle = await getDirectoryHandle();
 
   const settings = await chrome.storage.local.get({ requestFormat: "bash" });
   requestFormat.value = settings.requestFormat;
 
   if (tabId !== null) {
+    await chrome.runtime.sendMessage({ type: "REGISTER_CONTROLLER", tabId });
     const response = await chrome.runtime.sendMessage({ type: "GET_STATUS", tabId });
     recording = response?.ok && response.recording;
   }

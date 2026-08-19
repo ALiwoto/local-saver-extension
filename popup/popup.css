@@ -114,3 +114,10 @@ select {
 #message.info {
   color: #1565c0;
 }
+
+.hint {
+  margin: -8px 0 0;
+  color: color-mix(in srgb, CanvasText 65%, transparent);
+  font-size: 12px;
+  text-align: center;
+}

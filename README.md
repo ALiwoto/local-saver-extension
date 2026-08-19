@@ -18,13 +18,18 @@ For each request, it writes:
 ## Use
 
 1. Open the tab whose traffic you want to record.
-2. Open the extension popup and choose an output folder.
-3. Choose the request command format.
-4. Select **Start recording this tab**.
-5. Reload or use the page.
-6. Open the popup again and select **Stop recording**.
+2. Select the extension toolbar button. A small recorder window opens for the current tab.
+3. Keep the recorder window open and choose an output folder.
+4. Choose the request command format.
+5. Select **Start recording this tab**.
+6. Reload or use the page.
+7. Return to the recorder window and select **Stop recording**.
 
-To capture a navigation from its very first request, start from Chrome's New Tab page. When recording starts, the extension changes that restricted page to `about:blank`, attaches the debugger, and then waits for you to enter the destination URL in the address bar.
+To capture a navigation from its very first request, start from Chrome's New Tab page. When recording starts, the extension changes that restricted page to `about:blank`, attaches the debugger, returns focus to that tab, and then waits for you to enter the destination URL in the address bar.
+
+The recorder is a persistent window instead of a toolbar dropdown because Chrome keeps File System Access permission active only while an extension page for that origin remains open. Closing the recorder window stops capture.
+
+Stopping is idempotent: it remains safe to select **Stop recording** after the target tab has already been closed.
 
 Chrome displays its debugger warning while a tab is being recorded. Closing that warning detaches the extension and stops capture.
 
