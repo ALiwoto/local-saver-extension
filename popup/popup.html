@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Local Request Saver</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Local Request Saver</h1>
+        <span id="state" class="state idle">Idle</span>
+      </header>
+
+      <section>
+        <label>Output folder</label>
+        <div class="folder-row">
+          <span id="folder-name" title="No folder selected">No folder selected</span>
+          <button id="select-folder" type="button">Choose…</button>
+        </div>
+      </section>
+
+      <section>
+        <label for="request-format">Request command format</label>
+        <select id="request-format">
+          <option value="bash">cURL (bash)</option>
+          <option value="cmd">cURL (cmd)</option>
+          <option value="powershell">PowerShell (curl.exe)</option>
+        </select>
+      </section>
+
+      <button id="toggle" class="primary" type="button" disabled>Start recording this tab</button>
+      <p id="message" role="status" aria-live="polite"></p>
+    </main>
+
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>
